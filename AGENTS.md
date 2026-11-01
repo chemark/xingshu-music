@@ -5,7 +5,7 @@
 - Package with `go tool mygo build -skip-notarize -skip-dmg`; quit the running app, then replace `/Applications/星树音乐.app` with `build/darwin-arm64/星树音乐.app`.
 - Keep `name`, `identifier`, `signingIdentity` and `entitlements` in `mygo.json` as they are.
 - Don't add back the updater: `updates` in `mygo.json`, `useUpdater`, or 检查更新 menu items.
-- Don't push; take upstream changes by merging `origin/main` into the working branch.
+- Work on `main`, which tracks `origin` (private `chemark/xingshu-music`); take upstream changes by merging `upstream/main` (`egoist/mygo-cloudmusic`).
 
 ## Tests
 
