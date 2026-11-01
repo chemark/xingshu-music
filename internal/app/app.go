@@ -261,6 +261,16 @@ func Run() error {
 				return
 			}
 			e.PreventDefault()
+			// 全屏时直接隐藏会留下空的全屏桌面（黑屏），先退出全屏，退出完成后再隐藏
+			if runtime.GOOS == "darwin" && a.win.IsFullScreen() {
+				var off func()
+				off = a.win.OnLeaveFullScreen(func() {
+					off()
+					a.win.Hide()
+				})
+				a.win.SetFullScreen(false)
+				return
+			}
 			if runtime.GOOS == "darwin" || a.tray != nil {
 				a.win.Hide()
 			} else {
