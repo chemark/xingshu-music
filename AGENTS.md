@@ -2,34 +2,34 @@
 
 ## Build
 
-- Package with `go tool mygo build -skip-notarize -skip-dmg`; quit the running app, then replace `/Applications/星树音乐.app` with `build/darwin-arm64/星树音乐.app`.
-- Keep `name`, `identifier`, `signingIdentity` and `entitlements` in `mygo.json` as they are.
-- Don't add back the updater: `updates` in `mygo.json`, `useUpdater`, or 检查更新 menu items.
-- Work on `main`, which tracks `origin` (private `chemark/xingshu-music`); take upstream changes by merging `upstream/main` (`egoist/mygo-cloudmusic`).
+- 用 `go tool mygo build -skip-notarize -skip-dmg` 打包；先退出正在运行的 app，再用 `build/darwin-arm64/星树音乐.app` 替换 `/Applications/星树音乐.app`。
+- `mygo.json` 里的 `name`、`identifier`、`signingIdentity`、`entitlements` 保持不变。
+- 不要加回更新功能：`mygo.json` 的 `updates`、`useUpdater`、「检查更新」菜单项。
+- 在 `main` 上工作，`main` 跟踪 `origin`（私有仓库 `chemark/xingshu-music`）；上游改动通过合并 `upstream/main`（`egoist/mygo-cloudmusic`）获取。
 
 ## Tests
 
-Only write a test for behaviour that can actually break. If the code under test could change without the test noticing, or the test would fail on a harmless rewording, don't write it.
+只为真的可能出错的行为写测试。被测代码改了测试却察觉不到，或者措辞上无害的改动就会让测试失败，这样的测试不要写。
 
 **Write tests for:**
 
-- What input does: clicks, keys, drags, gestures and scrolling, and the state or effect they lead to (seeking when the progress bar is let go, Space after opening Now Playing, back and forward, flinging the cover, liking a song, leaving a radio).
-- Logic that doesn't need a view: parsing lyrics, formatting times and counts, the player's queue, seeking, fading and cache, decoding streams and images.
-- A regression you just fixed. Say in the test's comment what went wrong.
-- Frame budgets, in `perf_test.go`, so idle views don't start asking for frames they don't need.
+- 输入带来的效果：点击、按键、拖动、手势和滚动，以及它们导致的状态或效果（松开进度条时跳转、打开正在播放后按空格、后退与前进、甩动封面、喜欢一首歌、退出电台）。
+- 不依赖视图的逻辑：解析歌词、格式化时间和数量、播放器的队列、跳转、淡入淡出和缓存、解码音频流和图片。
+- 刚修好的回归问题。在测试注释里写明当时出了什么错。
+- 帧预算，写在 `perf_test.go` 里，确保空闲的视图不会开始请求不需要的帧。
 
 **Don't write tests that:**
 
-- Check that a list of labels shows on screen. That repeats the view code and breaks whenever the wording changes.
-- Check default settings or the order of rows in a form.
-- Test MyGo itself, for example that `AnimateTo` or a spring moves from 0 to 1.
-- Depend on the wall clock. `ui.NewTester` starts its clock at the current time, so anything with a phase taken from the clock passes or fails depending on when the test runs. Also, `FramePending` ignores frames waiting on `After` or `Painter.After`.
+- 检查一组标签是否显示在屏幕上。这只是重复视图代码，措辞一变就失败。
+- 检查默认设置，或表单里各行的顺序。
+- 测试 MyGo 本身，比如 `AnimateTo` 或弹簧动画是否从 0 走到 1。
+- 依赖真实时钟。`ui.NewTester` 的时钟从当前时间开始，所以任何相位取自时钟的东西，通过与否取决于测试运行的时刻。另外，`FramePending` 不计入等待 `After` 或 `Painter.After` 的帧。
 
 **How:**
 
-- Build views with `ui.NewTester` and set up the app with `newTestApp` (in `internal/app/helpers_test.go`). Find elements by their accessibility label, then `Click`, `RightClick`, `Press`/`Move`/`Release` or `Key`, and check the app's state afterwards.
-- Swap out the network and the clipboard through package variables such as `likeSong` and `copyText`, and restore the real one with `defer`.
-- Live tests that call NetEase skip unless `LIVE` is set.
-- Look at visuals instead of asserting on them. The `NM_FRAMES` tests save PNGs into that directory and skip when it isn't set. Check pixels only for coverage, such as whether a layer still covers the window.
-- Start each test with a one-sentence comment saying the behaviour it checks, in the style of the code.
-- Run `go test ./internal/...` before committing, and run a new UI test with `-count=5`. Fix or delete a flaky test; don't retry it.
+- 用 `ui.NewTester` 构建视图，用 `newTestApp`（在 `internal/app/helpers_test.go`）准备 app。按无障碍标签找元素，然后 `Click`、`RightClick`、`Press`/`Move`/`Release` 或 `Key`，之后检查 app 的状态。
+- 通过 `likeSong`、`copyText` 这类包级变量替换网络和剪贴板，并用 `defer` 换回真实实现。
+- 调用网易云的在线测试，没设置 `LIVE` 时跳过。
+- 视觉效果用眼看，不要写断言。`NM_FRAMES` 测试把 PNG 存进该目录，没设置时跳过。只在检查覆盖范围时比对像素，比如某一层是否仍盖满窗口。
+- 每个测试开头用一句注释说明它检查的行为，风格与代码一致。
+- 提交前运行 `go test ./internal/...`，新的 UI 测试用 `-count=5` 运行。不稳定的测试要修好或删掉，不要靠重跑。
