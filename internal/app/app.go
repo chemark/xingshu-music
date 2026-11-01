@@ -200,7 +200,7 @@ func Run() error {
 		cacheUsed:  -1,
 	}
 	moveOldData()
-	a.useUpdater()
+	// 自用版本不接原作者的自动更新，否则会被官方版覆盖
 	mygo.App.WhenReady(func() {
 		a.settings = loadSettings()
 		a.settings.applyAppearance()
