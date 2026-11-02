@@ -54,7 +54,7 @@
 - 星树音乐的官网放 `site/`，纯静态 HTML/CSS，不用构建工具和框架，不引入外部脚本和字体；不改上游的 `website/`。
 - 页面放 `site/` 根目录（`index.html`、`404.html`），样式放 `site/style.css`，图片放 `site/assets/`；文件名用小写英文加连字符。
 - 截图取自真实界面，不用设计稿和合成图；分享图 `share-card` 只用真实截图排版；换界面后同步更新截图和分享图。
-- 功能介绍只写代码里已有的功能；下载按钮直链 `https://github.com/chemark/xingshu-music/releases/latest/download/xingshu-music-arm64.dmg` 和 `…-amd64.dmg`，旁边写当前版本号。
+- 功能介绍只写代码里已有的功能；下载按钮直链 `https://github.com/chemark/xingshu-music/releases/latest/download/xingshu-music-arm64.dmg` 和 `…-amd64.dmg`，旁边写当前版本号；每次发布后改 `site/index.html` 里的版本号并重新部署官网。
 - `site/assets/` 的文件按 `site/_headers` 长期缓存：换图或改内容时改文件名，并同步改引用。
 - 本地预览用 `.claude/launch.json` 的 `site`（端口 8788）。
 - 部署配置是 `site/wrangler.jsonc`，只有静态资源，没有 Worker 脚本；域名 `music.hoshikihao.com`；在 `site/` 运行 `wrangler deploy` 部署。部署前先在本地预览检查桌面和手机宽度、深浅色。
