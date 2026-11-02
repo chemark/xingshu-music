@@ -28,7 +28,7 @@ macOS 13 或更高版本，支持 Apple 芯片和 Intel 芯片的 Mac。
 
 ## 下载安装
 
-1. 打开 [Releases](https://github.com/chemark/xingshu-music/releases/latest)，下载对应芯片的安装包：Apple 芯片（M 系列）选 `xingshu-music-<版本>-arm64.dmg`，Intel 芯片选 `xingshu-music-<版本>-amd64.dmg`。不确定时打开左上角苹果菜单 →「关于本机」，看「芯片」或「处理器」一项。
+1. 下载对应芯片的最新版安装包：Apple 芯片（M 系列）下载 [xingshu-music-arm64.dmg](https://github.com/chemark/xingshu-music/releases/latest/download/xingshu-music-arm64.dmg)，Intel 芯片下载 [xingshu-music-amd64.dmg](https://github.com/chemark/xingshu-music/releases/latest/download/xingshu-music-amd64.dmg)，各版本都在 [Releases](https://github.com/chemark/xingshu-music/releases)。不确定时打开左上角苹果菜单 →「关于本机」，看「芯片」或「处理器」一项。
 2. 打开 dmg，把「星树音乐」拖进「应用程序」文件夹。
 
 安装包已经过 Apple 公证，可以直接打开。星树音乐不会自动更新，有新版本时到 Releases 下载，按同样的方式覆盖安装。

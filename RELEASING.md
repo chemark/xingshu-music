@@ -26,7 +26,7 @@
    gh release delete v1.1.0 --repo chemark/xingshu-music --yes
    ```
 
-4. `.github/workflows/release.yml` 构建 Apple 芯片和 Intel 两个 dmg，签名、公证后上传到 tag 的草稿 release。等它跑完：
+4. `.github/workflows/release.yml` 构建 Apple 芯片和 Intel 两个 dmg，签名、公证后以 `xingshu-music-arm64.dmg`、`xingshu-music-amd64.dmg` 上传到 tag 的草稿 release。等它跑完：
 
    ```bash
    gh run watch "$(gh run list --repo chemark/xingshu-music --workflow release.yml -L1 --json databaseId -q '.[0].databaseId')" --repo chemark/xingshu-music --exit-status

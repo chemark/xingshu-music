@@ -65,12 +65,17 @@ jobs:
       # which 星树音乐 leaves out.
       - name: Build
         run: go tool mygo build -platform darwin/arm64,darwin/amd64
+      # Uploaded without the version in their names, so that the website
+      # links to releases/latest/download/xingshu-music-<arch>.dmg.
       - name: Upload to the draft release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          for arch in arm64 amd64; do
+            cp "build/darwin-$arch/xingshu-music-${GITHUB_REF_NAME#v}-$arch.dmg" "$RUNNER_TEMP/xingshu-music-$arch.dmg"
+          done
           if ! gh release view "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
             gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" \
               --draft --verify-tag --title "$GITHUB_REF_NAME" --notes-file "$RUNNER_TEMP/notes.md"
           fi
-          gh release upload "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --clobber build/darwin-*/*.dmg
+          gh release upload "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --clobber "$RUNNER_TEMP"/xingshu-music-*.dmg
