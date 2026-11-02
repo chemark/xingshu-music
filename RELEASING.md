@@ -50,6 +50,8 @@
    gh release edit v1.1.0 --repo chemark/xingshu-music --draft=false --latest
    ```
 
+7. 把 `site/index.html` 里所有的版本号（首屏按钮和下载区）改成 `v1.1.0`，提交并推 `main`，再在 `site/` 运行 `wrangler deploy`，然后检查 https://music.hoshikihao.com 显示的是新版本。
+
 ## Secrets
 
 工作流用到仓库 Settings → Secrets and variables → Actions 里的 5 个 Secrets：
