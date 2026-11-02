@@ -3,13 +3,13 @@
     {
       "layers": [
         {
-          "image-name": "arm.svg",
-          "name": "arm",
-          "glass": true
+          "image-name": "star.svg",
+          "name": "star",
+          "glass": false
         }
       ],
       "shadow": {
-        "kind": "neutral",
+        "kind": "none",
         "opacity": 0.5
       },
       "translucency": {
@@ -20,18 +20,13 @@
     {
       "layers": [
         {
-          "image-name": "label.svg",
-          "name": "label",
-          "glass": true
-        },
-        {
-          "image-name": "record.svg",
-          "name": "record",
-          "glass": true
+          "image-name": "leaves.svg",
+          "name": "leaves",
+          "glass": false
         }
       ],
       "shadow": {
-        "kind": "neutral",
+        "kind": "none",
         "opacity": 0.5
       },
       "translucency": {
@@ -50,8 +45,8 @@
     {
       "value": {
         "linear-gradient": [
-          "srgb:1.00000,0.32157,0.30196,1.00000",
-          "srgb:0.84706,0.04314,0.15294,1.00000"
+          "srgb:0.07059,0.08235,0.10980,1.00000",
+          "srgb:0.05490,0.06667,0.08627,1.00000"
         ],
         "orientation": {
           "start": {
@@ -69,8 +64,8 @@
       "appearance": "dark",
       "value": {
         "linear-gradient": [
-          "srgb:0.24000,0.22000,0.24000,1.00000",
-          "srgb:0.09000,0.08000,0.09000,1.00000"
+          "srgb:0.07059,0.08235,0.10980,1.00000",
+          "srgb:0.05490,0.06667,0.08627,1.00000"
         ],
         "orientation": {
           "start": {

@@ -7,6 +7,12 @@
 - 不要加回更新功能：`mygo.json` 的 `updates`、`useUpdater`、「检查更新」菜单项。
 - 在 `main` 上工作，`main` 跟踪 `origin`（私有仓库 `chemark/xingshu-music`）；上游改动通过合并 `upstream/main`（`egoist/mygo-cloudmusic`）获取。
 
+## Design
+
+- 设计稿放 `design/<主题>/`（如 `design/app-icon/`），文件名用小写英文加连字符。
+- `design/` 只保留最终采用的设计稿，代码和构建不引用它；采用的方案落到 `icon/`、`resources/` 等正式位置。
+- 过程稿、落选方案和临时文件放在临时目录，定稿后删掉，不提交进 `design/`。
+
 ## Tests
 
 只为真的可能出错的行为写测试。被测代码改了测试却察觉不到，或者措辞上无害的改动就会让测试失败，这样的测试不要写。
