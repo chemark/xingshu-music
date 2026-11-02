@@ -3,9 +3,17 @@
 ## Build
 
 - 用 `go tool mygo build -skip-notarize -skip-dmg` 打包；先退出正在运行的 app，再用 `build/darwin-arm64/星树音乐.app` 替换 `/Applications/星树音乐.app`。
-- `mygo.json` 里的 `name`、`identifier`、`signingIdentity`、`entitlements` 保持不变。
+- `mygo.json` 里的 `name`、`identifier`、`signingIdentity`、`entitlements`、`notarize` 保持不变。
 - 不要加回更新功能：`mygo.json` 的 `updates`、`useUpdater`、「检查更新」菜单项。
-- 在 `main` 上工作，`main` 跟踪 `origin`（私有仓库 `chemark/xingshu-music`）；上游改动通过合并 `upstream/main`（`egoist/mygo-cloudmusic`）获取。
+- 在 `main` 上工作，`main` 跟踪 `origin`（`chemark/xingshu-music`）；上游改动通过合并 `upstream/main`（`egoist/mygo-cloudmusic`）获取。
+- `website/` 是上游的官网，不改动。
+
+## Release
+
+- 按 `RELEASING.md` 发布：推 `v<version>` tag 触发 `.github/workflows/release.yml`，只构建 macOS 的 `darwin/arm64` 和 `darwin/amd64` 两个 dmg，签名、公证后上传到草稿 release，检查后手动发布。
+- 不用 `mygo build -upload`，不生成、不上传更新清单。
+- 版本号从 1.0.0 起独立编号，不跟上游；每次发布在 `CHANGELOG.md` 顶部加 `## <version>` 一节。
+- 合并上游时，`mygo.json` 的 `version` 和 `CHANGELOG.md` 顶部的冲突保留本仓库的版本，上游的新变化写进下一版的 `## <version>` 一节。
 
 ## Design
 

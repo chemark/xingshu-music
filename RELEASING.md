@@ -1,60 +1,69 @@
 # Releasing
 
-1. Commit pending work, bring main up to date with origin, and run `go test ./internal/...`. Others push to main too, so a release cut from a stale main leaves out their work:
+以发布 1.1.0 为例，上一版是 1.0.0。
+
+1. 在 `main` 上提交完要发布的改动，同步 `origin`，跑测试：
 
    ```bash
-   git pull --rebase origin main
+   git pull --ff-only origin main
+   go test ./internal/...
    ```
 
-2. Bump `version` in `mygo.json`, and add a `## 0.1.8` section at the top of `CHANGELOG.md` saying, in Chinese, what changed for people using the app since the last release (`git log v0.1.7..HEAD`, after the pull). Commit both in a commit titled just the version, e.g. `0.1.8`. MyGo's updater shows that section in the app's update window, and the release page takes it as its notes; `mygo build` fails without one.
-3. Push main first, and tag only once that push has gone through. Pushing both at once still pushes the tag when main is rejected, and the tag starts a release build of a commit that isn't on main:
+2. 把 `mygo.json` 的 `version` 改成 `1.1.0`，在 `CHANGELOG.md` 顶部加一节 `## 1.1.0`，用中文写用户能感知到的变化（参考 `git log v1.0.0..HEAD`），这期间合并进来的上游改动也写进去。两处改动放在一个提交里，标题只写版本号 `1.1.0`。发布页的说明取自这一节，没有这一节工作流会失败。
+
+3. 先推 `main`，推成功后再打 tag、推 tag：
 
    ```bash
    git push origin main
-   git tag v0.1.8
-   git push origin v0.1.8
+   git tag v1.1.0
+   git push origin v1.1.0
    ```
 
-   If main is rejected, pull again, add what came in to the changelog, amend the version commit, test, and push main again before tagging. If a tag went up on the wrong commit anyway, cancel its run, then delete the tag and the draft it made before tagging again:
+   tag 打错了提交时，先取消它触发的运行，再删掉 tag 和它建的草稿：
 
    ```bash
-   git push origin :refs/tags/v0.1.8
-   gh release delete v0.1.8 --yes
+   git push origin :refs/tags/v1.1.0
+   gh release delete v1.1.0 --repo chemark/xingshu-music --yes
    ```
 
-4. `.github/workflows/release.yml` builds macOS, Windows and Linux and uploads them to a draft release. Wait for every job to pass:
+4. `.github/workflows/release.yml` 构建 Apple 芯片和 Intel 两个 dmg，签名、公证后上传到 tag 的草稿 release。等它跑完：
 
    ```bash
-   gh run watch "$(gh run list --workflow release.yml -L1 --json databaseId -q '.[0].databaseId')" --exit-status
+   gh run watch "$(gh run list --repo chemark/xingshu-music --workflow release.yml -L1 --json databaseId -q '.[0].databaseId')" --repo chemark/xingshu-music --exit-status
    ```
 
-   If a job fails, don't publish; fix it first.
+   失败了就不要发布，先修好。
 
-5. Publish the draft and mark it latest:
+5. 下载草稿里的 dmg，确认已公证：
 
    ```bash
-   gh release edit v0.1.8 --draft=false --latest
+   gh release download v1.1.0 --repo chemark/xingshu-music --pattern '*.dmg' --dir /tmp/xingshu-release
+   for f in /tmp/xingshu-release/*.dmg; do
+     xcrun stapler validate "$f"
+     spctl -a -t open --context context:primary-signature -v "$f"
+   done
    ```
 
-6. Check the update feed shows the new version:
+6. 发布草稿，标为最新：
 
    ```bash
-   curl -sL https://github.com/egoist/mygo-cloudmusic/releases/latest/download/update-darwin-arm64.json
+   gh release edit v1.1.0 --repo chemark/xingshu-music --draft=false --latest
    ```
 
-7. Deploy the website. It reads the latest release when it's prerendered, so it has to be rebuilt after publishing:
+## Secrets
 
-   ```bash
-   cd website && bun run deploy
-   ```
+工作流用到仓库 Settings → Secrets and variables → Actions 里的 5 个密钥：
 
-   Then check https://mygo-cloudmusic.egoist.workers.dev/download/ shows the new version.
+| 名称 | 内容 | 获取方式 |
+| --- | --- | --- |
+| `MACOS_CERTIFICATE` | Developer ID Application 证书（含私钥）的 p12，base64 编码 | 钥匙串访问 →「登录」→「我的证书」，选中 `Developer ID Application: hao hoshiki (6SKPUQN55Z)`（展开能看到私钥），右键导出为 `.p12` 并设一个密码；再用 `base64 -i 证书.p12 \| gh secret set MACOS_CERTIFICATE --repo chemark/xingshu-music` 写入，写完删掉 `.p12` 文件 |
+| `MACOS_CERTIFICATE_PASSWORD` | 导出 p12 时设的密码 | 同上 |
+| `APPLE_ID` | 开发者账号的 Apple 账户邮箱 | — |
+| `APPLE_TEAM_ID` | 团队 ID：`6SKPUQN55Z` | developer.apple.com → Account → Membership details |
+| `APPLE_APP_PASSWORD` | App 专用密码，供 `notarytool` 登录公证服务 | account.apple.com →「登录与安全」→「App 专用密码」→ 生成 |
+
+除 `MACOS_CERTIFICATE` 外，都可以用 `gh secret set <名称> --repo chemark/xingshu-music` 在提示处粘贴写入。
 
 ## The speech recognition libraries
 
-Podcast captions run sherpa-onnx, whose libraries the app downloads with the model from the `sherpa-onnx-<version>` release, not from the app's own. They only change with sherpa-onnx's version, in `scripts/sherpa`. Then pack them again, signing the macOS ones with the app's Developer ID (the app's hardened runtime loads no others), commit the `internal/speech/natives.go` it writes, and upload them as a prerelease, which never becomes the latest that updates look for:
-
-```bash
-go run ./scripts/sherpa -sign "Developer ID Application: xinyu zeng (GJE9R5VE87)"
-gh release create sherpa-onnx-2.0.1 --prerelease --latest=false build/sherpa/*
-```
+播客字幕用的 sherpa-onnx 库由 app 从上游的 `sherpa-onnx-2.0.1` release 下载，由上游的 Developer ID 签名，靠 `entitlements.plist` 的 `disable-library-validation` 加载。本仓库不重新打包、不发布这些库。
