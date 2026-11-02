@@ -2,7 +2,7 @@
   "name": "星树音乐",
   "identifier": "com.hoshikihao.xingshumusic",
   "slug": "xingshu-music",
-  "version": "0.1.24",
+  "version": "1.0.0",
   "out": "build",
   "macos": {
     "icon": "icon/AppIcon.icon",
