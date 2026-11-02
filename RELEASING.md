@@ -52,17 +52,17 @@
 
 ## Secrets
 
-工作流用到仓库 Settings → Secrets and variables → Actions 里的 5 个密钥：
+工作流用到仓库 Settings → Secrets and variables → Actions 里的 5 个 Secrets：
 
 | 名称 | 内容 | 获取方式 |
 | --- | --- | --- |
 | `MACOS_CERTIFICATE` | Developer ID Application 证书（含私钥）的 p12，base64 编码 | 钥匙串访问 →「登录」→「我的证书」，选中 `Developer ID Application: hao hoshiki (6SKPUQN55Z)`（展开能看到私钥），右键导出为 `.p12` 并设一个密码；再用 `base64 -i 证书.p12 \| gh secret set MACOS_CERTIFICATE --repo chemark/xingshu-music` 写入，写完删掉 `.p12` 文件 |
 | `MACOS_CERTIFICATE_PASSWORD` | 导出 p12 时设的密码 | 同上 |
-| `APPLE_ID` | 开发者账号的 Apple 账户邮箱 | — |
-| `APPLE_TEAM_ID` | 团队 ID：`6SKPUQN55Z` | developer.apple.com → Account → Membership details |
-| `APPLE_APP_PASSWORD` | App 专用密码，供 `notarytool` 登录公证服务 | account.apple.com →「登录与安全」→「App 专用密码」→ 生成 |
+| `APPLE_API_KEY` | CI 专用的 App Store Connect API 密钥 `.p8` 的内容，供 `notarytool` 公证 | App Store Connect →「用户和访问」→「集成」→「App Store Connect API」→ 团队密钥 → 生成，名称 `xingshu-ci`，访问权限「开发者」，下载 `AuthKey_<密钥 ID>.p8`（只能下载一次）；用 `gh secret set APPLE_API_KEY --repo chemark/xingshu-music < AuthKey_<密钥 ID>.p8` 写入，写完删掉 `.p8` 文件 |
+| `APPLE_API_KEY_ID` | 这把密钥的 ID | 密钥列表里的「密钥 ID」，也是 `.p8` 文件名里的那一段 |
+| `APPLE_API_ISSUER_ID` | 团队的 Issuer ID | 同一页密钥列表上方的「Issuer ID」 |
 
-除 `MACOS_CERTIFICATE` 外，都可以用 `gh secret set <名称> --repo chemark/xingshu-music` 在提示处粘贴写入。
+`MACOS_CERTIFICATE_PASSWORD`、`APPLE_API_KEY_ID`、`APPLE_API_ISSUER_ID` 可以用 `gh secret set <名称> --repo chemark/xingshu-music` 在提示处粘贴写入。密钥泄露时在同一页吊销 `xingshu-ci`，再生成一把替换 `APPLE_API_KEY` 和 `APPLE_API_KEY_ID`。
 
 ## The speech recognition libraries
 

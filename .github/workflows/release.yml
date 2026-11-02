@@ -34,15 +34,16 @@ jobs:
         with:
           go-version-file: go.mod
       # The certificate signs the app; the notary profile, "notary" in
-      # mygo.json, notarizes its disk images. Both go in a keychain of the
+      # mygo.json, made from an App Store Connect API key of the Developer
+      # role, notarizes its disk images. Both go in a keychain of the
       # job, made the default one, where codesign and notarytool look.
       - name: Import the certificate and the notary credentials
         env:
           MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
           MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-          APPLE_APP_PASSWORD: ${{ secrets.APPLE_APP_PASSWORD }}
+          APPLE_API_KEY: ${{ secrets.APPLE_API_KEY }}
+          APPLE_API_KEY_ID: ${{ secrets.APPLE_API_KEY_ID }}
+          APPLE_API_ISSUER_ID: ${{ secrets.APPLE_API_ISSUER_ID }}
         run: |
           keychain="$RUNNER_TEMP/signing.keychain-db"
           password="$(openssl rand -base64 24)"
@@ -56,8 +57,10 @@ jobs:
           security set-key-partition-list -S apple-tool:,apple: -s -k "$password" "$keychain"
           security list-keychains -d user -s "$keychain" login.keychain
           security default-keychain -d user -s "$keychain"
+          printf '%s\n' "$APPLE_API_KEY" > "$RUNNER_TEMP/AuthKey.p8"
           xcrun notarytool store-credentials notary --keychain "$keychain" \
-            --apple-id "$APPLE_ID" --team-id "$APPLE_TEAM_ID" --password "$APPLE_APP_PASSWORD"
+            --key "$RUNNER_TEMP/AuthKey.p8" --key-id "$APPLE_API_KEY_ID" --issuer "$APPLE_API_ISSUER_ID"
+          rm "$RUNNER_TEMP/AuthKey.p8"
       # Without -upload: mygo build uploads only with updates in mygo.json,
       # which 星树音乐 leaves out.
       - name: Build
