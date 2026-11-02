@@ -14,26 +14,28 @@
 <meta property="og:title" content="星树音乐">
 <meta property="og:description" content="在 Mac 上听网易云音乐的原生客户端。">
 <meta property="og:url" content="https://music.hoshikihao.com/">
-<meta property="og:image" content="https://music.hoshikihao.com/assets/share-card.jpg">
+<meta property="og:image" content="https://music.hoshikihao.com/assets/share-card-v2.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="星树音乐：竖排的名字，旁边是正在播放的歌词页截图">
+<meta property="og:image:alt" content="星树音乐：app 图标和竖排的名字，旁边是正在播放的歌词页截图">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 
 <header class="bar">
-  <a class="brand" href="/"><img src="/assets/favicon.svg" alt="" width="24" height="24">星树音乐</a>
   <nav>
-    <a href="#download">下载</a>
-    <a href="https://github.com/chemark/xingshu-music">源代码</a>
+    <a href="https://github.com/chemark/xingshu-music" aria-label="GitHub 仓库"><svg viewBox="0 0 16 16" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg></a>
+    <a href="https://x.com/hoshikihao" aria-label="X 上的 @hoshikihao"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg></a>
   </nav>
 </header>
 
 <main>
   <section class="hero">
-    <h1 class="name">星树音乐</h1>
+    <div class="spine">
+      <img class="app-icon" src="/assets/app-icon-320.webp" width="320" height="320" alt="">
+      <h1 class="name">星树音乐</h1>
+    </div>
     <div class="pitch">
       <p class="lede">在 Mac 上听网易云音乐的原生客户端。</p>
       <p>不是网页套壳：界面由程序原生绘制，没有 WebView。</p>
@@ -46,12 +48,17 @@
     </div>
 
     <figure class="shot">
-      <picture>
-        <source media="(max-width: 560px)" srcset="/assets/now-playing-narrow.webp" width="1060" height="1150" type="image/webp">
-        <source srcset="/assets/now-playing-1000.webp 1000w, /assets/now-playing-2000.webp 2000w" sizes="(max-width: 1080px) 92vw, 900px" type="image/webp">
-        <img src="/assets/now-playing-1600.jpg" width="2000" height="1322" alt="正在播放的歌词页：左边是封面和播放控制，右边是逐字点亮的歌词">
-      </picture>
-      <figcaption>正在播放：歌词逐字点亮，背景取自封面的颜色。</figcaption>
+      <div class="player">
+        <video autoplay muted loop playsinline poster="/assets/now-playing-poster.webp" width="2000" height="1254" aria-label="录屏：正在播放页依次切换到歌词、律动、待播清单和选歌">
+          <source media="(max-width: 560px)" src="/assets/now-playing-1000.mp4" type="video/mp4">
+          <source src="/assets/now-playing-2000.mp4" type="video/mp4">
+        </video>
+        <button class="toggle" type="button" aria-label="暂停录屏">
+          <svg class="icon-pause" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M4 2h3v12H4zM9 2h3v12H9z"/></svg>
+          <svg class="icon-play" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M4 2l10 6-10 6z"/></svg>
+        </button>
+      </div>
+      <figcaption>正在播放：逐字歌词、律动、待播清单和选歌。</figcaption>
     </figure>
   </section>
 
@@ -61,7 +68,7 @@
     <div class="group">
       <h3>听歌</h3>
       <ul>
-        <li>边下边播，音质从标准到无损和 Hi-Res 可选。</li>
+        <li>在线播放，音质从标准到无损和 Hi-Res 可选。</li>
         <li>听过的歌存在本机，再听不用等。</li>
         <li>音量均衡；暂停和继续时淡出淡入，拖动进度没有杂音。</li>
         <li>退出后再打开，接着上次的播放队列和进度。</li>
@@ -78,16 +85,20 @@
         <li>间奏时显示热门评论。</li>
         <li>⌘1 到 ⌘5 切换歌词、律动、待播清单、选歌和评论。</li>
       </ul>
+      <figure class="shot">
+        <div class="player">
+          <video muted loop playsinline preload="none" poster="/assets/song-wall-poster.webp" width="1400" height="878" aria-label="录屏：选歌页拖动封面墙挑歌，换歌后背景颜色跟着封面变">
+            <source media="(max-width: 560px)" src="/assets/song-wall-1000.mp4" type="video/mp4">
+            <source src="/assets/song-wall-1400.mp4" type="video/mp4">
+          </video>
+          <button class="toggle" type="button" aria-label="暂停录屏">
+            <svg class="icon-pause" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M4 2h3v12H4zM9 2h3v12H9z"/></svg>
+            <svg class="icon-play" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M4 2l10 6-10 6z"/></svg>
+          </button>
+        </div>
+        <figcaption>选歌：待播清单铺成封面墙，播放时每排封面随音乐左右摆动。</figcaption>
+      </figure>
     </div>
-
-    <figure class="shot">
-      <picture>
-        <source media="(max-width: 560px)" srcset="/assets/song-wall-narrow.webp" width="1300" height="1080" type="image/webp">
-        <source srcset="/assets/song-wall-1000.webp 1000w, /assets/song-wall-2000.webp 2000w" sizes="(max-width: 1080px) 92vw, 1032px" type="image/webp">
-        <img src="/assets/song-wall-1600.jpg" width="2000" height="1322" alt="「选歌」页：上方是正在播放的歌，下方是几排待播歌曲的封面墙" loading="lazy">
-      </picture>
-      <figcaption>选歌：待播清单铺成封面墙，播放时每排封面随音乐左右摆动。</figcaption>
-    </figure>
 
     <div class="group">
       <h3>找歌</h3>
@@ -96,6 +107,19 @@
         <li>搜索单曲、歌手、专辑、歌单、用户和播客，边输入边给建议。</li>
         <li>歌手页有热门与最新歌曲、专辑和动态，可以关注歌手。</li>
       </ul>
+      <figure class="shot">
+        <div class="player">
+          <video muted loop playsinline preload="none" poster="/assets/discover-poster.webp" width="1400" height="1018" aria-label="录屏：依次打开每日推荐、私人 FM、排行榜、播客和搜索结果">
+            <source media="(max-width: 560px)" src="/assets/discover-1000.mp4" type="video/mp4">
+            <source src="/assets/discover-1400.mp4" type="video/mp4">
+          </video>
+          <button class="toggle" type="button" aria-label="暂停录屏">
+            <svg class="icon-pause" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M4 2h3v12H4zM9 2h3v12H9z"/></svg>
+            <svg class="icon-play" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M4 2l10 6-10 6z"/></svg>
+          </button>
+        </div>
+        <figcaption>找歌：每日推荐、私人 FM、排行榜、播客和搜索。</figcaption>
+      </figure>
     </div>
 
     <div class="group">
@@ -104,6 +128,13 @@
         <li>订阅和收听播客，给节目点赞，看节目评论。</li>
         <li>在本机把节目转写成字幕，像歌词一样随播放滚动，点一句就跳到那里。音频不会上传。</li>
       </ul>
+      <figure class="shot">
+        <picture>
+          <source srcset="/assets/podcast-subtitles.webp" type="image/webp">
+          <img src="/assets/podcast-subtitles.jpg" width="1180" height="1010" alt="播客的字幕页：左边是节目封面和播放控制，右边是随播放滚动的字幕" loading="lazy">
+        </picture>
+        <figcaption>播客字幕：在本机转写，随节目逐句滚动。</figcaption>
+      </figure>
     </div>
 
     <div class="group">
@@ -114,16 +145,24 @@
         <li>浅色、深色或跟随系统。</li>
         <li>用网易云音乐 App 扫码登录，登录状态存在系统钥匙串里。</li>
       </ul>
+      <figure class="shot menu-shot">
+        <picture>
+          <source srcset="/assets/menu-bar.webp" type="image/webp">
+          <img src="/assets/menu-bar.jpg" width="500" height="300" alt="菜单栏里星树音乐的菜单：打开星树音乐、播放/暂停、下一首、上一首、喜欢/取消喜欢、设置和退出" loading="lazy">
+        </picture>
+        <figcaption>菜单栏：不用打开窗口，也能播放、切歌和喜欢。</figcaption>
+      </figure>
     </div>
   </section>
 
   <section class="download-info" id="download" aria-labelledby="download-title">
     <h2 id="download-title">下载</h2>
-    <p>当前版本 v1.0.0，需要 macOS 13 或更新版本，Apple 芯片和 Intel 芯片的 Mac 各有一个安装包。不确定是哪种，看苹果菜单里「关于本机」的「芯片」或「处理器」一栏：写着 Apple M1、M2 这类的是 Apple 芯片，写着 Intel 的是 Intel 芯片。</p>
+    <p>当前版本 v1.0.0，需要 macOS 13 或更新版本。</p>
     <div class="get">
       <a class="download" href="https://github.com/chemark/xingshu-music/releases/latest/download/xingshu-music-arm64.dmg">下载 Apple 芯片版</a>
       <a class="download alt" href="https://github.com/chemark/xingshu-music/releases/latest/download/xingshu-music-amd64.dmg">下载 Intel 芯片版</a>
     </div>
+    <p class="hint">不确定选哪个：打开苹果菜单 › 关于本机，「芯片」写着 Apple M1、M2 这类的选 Apple 芯片，「处理器」写着 Intel 的选 Intel 芯片。</p>
     <p>安装包经过 Apple 公证，打开后把星树音乐拖进「应用程序」文件夹即可。应用不会自动更新，新版本请回到这里下载；历次版本和更新说明在 <a href="https://github.com/chemark/xingshu-music/releases">GitHub Releases</a>。</p>
   </section>
 
@@ -139,6 +178,45 @@
   <img src="/assets/favicon.svg" alt="" width="20" height="20">
   <p>星树音乐，由星树浩维护。</p>
 </footer>
+
+<script>
+  // 录屏进入视口才播放、离开就暂停；点了暂停的不再自动播放；系统设置了减少动态效果时都不自动播放
+  {
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const observer = new IntersectionObserver((entries) => {
+      for (const { target: video, isIntersecting } of entries) {
+        if (!isIntersecting) video.pause();
+        else if (!reduce && !video.dataset.held) video.play();
+      }
+    });
+    for (const player of document.querySelectorAll(".player")) {
+      const video = player.querySelector("video");
+      const toggle = player.querySelector(".toggle");
+      if (reduce) {
+        video.autoplay = false;
+        video.pause();
+      }
+      // 按钮的图标和读屏文字跟着播放状态走
+      const sync = () => {
+        toggle.classList.toggle("paused", video.paused);
+        toggle.setAttribute("aria-label", video.paused ? "播放录屏" : "暂停录屏");
+      };
+      video.addEventListener("play", sync);
+      video.addEventListener("pause", sync);
+      toggle.addEventListener("click", () => {
+        if (video.paused) {
+          delete video.dataset.held;
+          video.play();
+        } else {
+          video.dataset.held = "1";
+          video.pause();
+        }
+      });
+      sync();
+      observer.observe(video);
+    }
+  }
+</script>
 
 </body>
 </html>
