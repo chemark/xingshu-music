@@ -55,38 +55,63 @@ a:focus-visible { outline: 2px solid var(--leaf); outline-offset: 3px; border-ra
 .bar a { color: var(--ink); text-decoration: none; }
 .bar a:hover { text-decoration: underline; }
 .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; }
+.bar nav { display: flex; gap: 24px; }
 
-/* 首屏：书名竖排，像书脊 */
+/* 首屏：书名竖排在左，像书脊；右边是介绍、下载和截图 */
 .hero {
   display: grid;
-  grid-template-columns: auto 1fr;
-  gap: clamp(32px, 6vw, 88px);
-  align-items: end;
-  padding: clamp(40px, 9vw, 112px) 0 clamp(48px, 7vw, 88px);
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: clamp(20px, 2.5vw, 28px) clamp(28px, 5vw, 72px);
+  padding: clamp(16px, 3vw, 32px) 0 clamp(64px, 9vw, 112px);
 }
 
 .name {
+  grid-row: 1 / span 2;
   margin: 0;
   writing-mode: vertical-rl;
-  font: 400 clamp(76px, 11vw, 148px)/1 var(--serif);
+  font: 400 clamp(64px, 8vw, 112px)/1 var(--serif);
   letter-spacing: 0.06em;
 }
 
-.pitch { max-width: 34em; padding-bottom: 0.4em; text-wrap: pretty; }
+.pitch { text-wrap: pretty; }
 .pitch p { margin: 0 0 1em; color: var(--muted); }
 .pitch .lede {
   color: var(--ink);
-  font: 400 clamp(24px, 2.6vw, 30px)/1.5 var(--serif);
-  margin: 0 0 0.6em;
+  font: 400 clamp(24px, 2.3vw, 28px)/1.5 var(--serif);
+  margin: 0 0 0.4em;
+}
+.pitch .req { margin: 12px 0 0; font-size: 14px; }
+
+/* 宽屏上介绍在左、下载在右，把截图让进首屏 */
+@media (min-width: 900px) {
+  .pitch {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 40px;
+    align-items: end;
+  }
+  .pitch .lede { grid-column: 1 / -1; }
+  .pitch > p:not(.req, .lede) { grid-column: 1; }
+  .pitch .get {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-column: 2;
+    grid-row: 2;
+    margin: 0;
+  }
+  .pitch .get-title { grid-column: 1 / -1; }
+  .pitch .req { grid-column: 2; }
 }
 
 .get {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px 20px;
-  margin-top: 2em;
+  gap: 12px;
+  margin: 1.6em 0;
 }
+.get .get-title { flex-basis: 100%; margin: 0; color: var(--ink); font-weight: 600; }
+.version { margin-left: 6px; color: var(--muted); font-weight: 400; }
 
 /* 按钮的圆角取自叶片：对角圆、对角尖 */
 .download {
@@ -99,15 +124,26 @@ a:focus-visible { outline: 2px solid var(--leaf); outline-offset: 3px; border-ra
   text-decoration: none;
 }
 .download:hover { background: #77A85B; }
-.get .req { margin: 0; font-size: 14px; }
+.download.alt {
+  background: none;
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1.5px var(--leaf);
+}
+.download.alt:hover { background: rgb(105 152 79 / 0.16); }
 
 .shot { margin: 0 0 clamp(64px, 10vw, 128px); }
-/* 截图是带圆角的窗口，JPEG 的角是黑的，用圆角裁掉 */
+.hero .shot { grid-column: 2; margin: 0; }
+/* 截图按视口高度收窄，矮屏上也整张留在首屏；1.513 是截图的宽高比 */
+@media (min-width: 561px) {
+  .hero .pitch, .hero .shot { width: clamp(480px, calc((100svh - 350px) * 1.513), 100%); }
+}
+/* 截图是带圆角的窗口，JPEG 的角是黑的，用圆角裁掉；底色是截图的主色，图片加载前先占位 */
 .shot img {
   display: block;
   width: 100%;
   height: auto;
   border-radius: 1.1% / 1.66%;
+  background: #4A2823;
   box-shadow: 0 0 0 1px var(--line);
 }
 .shot figcaption { margin-top: 14px; color: var(--muted); font-size: 14px; }
@@ -157,8 +193,11 @@ footer p { margin: 0; }
 @media (max-width: 560px) {
   body { font-size: 16px; }
   .bar, main, footer { padding-inline: 16px; }
-  .hero { gap: 24px; align-items: start; }
-  .name { font-size: 64px; }
+  .hero { gap: 28px 20px; }
+  .name { grid-row: 1; font-size: 60px; }
+  .hero .shot { grid-column: 1 / -1; }
+  .shot img { border-radius: 8px; }
+  .download { padding-inline: 20px; }
   .group, .download-info, .source { grid-template-columns: minmax(0, 1fr); }
   .group h3, .download-info h2, .source h2 { grid-column: 1; grid-row: auto; margin-bottom: 0.4em; }
   .group > *, .download-info > *, .source > * { grid-column: 1; }
