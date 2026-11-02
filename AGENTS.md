@@ -11,6 +11,7 @@
 ## Release
 
 - 按 `RELEASING.md` 发布：推 `v<version>` tag 触发 `.github/workflows/release.yml`，只构建 macOS 的 `darwin/arm64` 和 `darwin/amd64` 两个 dmg，签名、公证后上传到草稿 release，检查后手动发布。
+- Release 的 dmg 只用固定文件名 `xingshu-music-arm64.dmg`、`xingshu-music-amd64.dmg`，不带版本号；官网和 README 链接 `releases/latest/download/<文件名>`。
 - 不用 `mygo build -upload`，不生成、不上传更新清单。
 - 版本号从 1.0.0 起独立编号，不跟上游；每次发布在 `CHANGELOG.md` 顶部加 `## <version>` 一节。
 - 合并上游时，`mygo.json` 的 `version` 和 `CHANGELOG.md` 顶部的冲突保留本仓库的版本，上游的新变化写进下一版的 `## <version>` 一节。
