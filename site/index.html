@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>星树音乐</title>
+<meta name="description" content="在 Mac 上听网易云音乐的原生客户端，开源，以 AGPL-3.0 发布。">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#12151C" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#F8EFE4" media="(prefers-color-scheme: light)">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="星树音乐">
+<meta property="og:description" content="在 Mac 上听网易云音乐的原生客户端。">
+<meta property="og:url" content="https://music.hoshikihao.com/">
+<meta property="og:image" content="https://music.hoshikihao.com/assets/og.png">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="bar">
+  <a class="brand" href="/"><img src="/assets/favicon.svg" alt="" width="24" height="24">星树音乐</a>
+  <a href="https://github.com/chemark/xingshu-music">源代码</a>
+</header>
+
+<main>
+  <section class="hero">
+    <h1 class="name">星树音乐</h1>
+    <div class="pitch">
+      <p class="lede">在 Mac 上听网易云音乐的原生客户端。</p>
+      <p>不是网页套壳：界面由程序原生绘制，没有 WebView。</p>
+      <div class="get">
+        <a class="download" href="https://github.com/chemark/xingshu-music/releases/latest">下载 dmg</a>
+        <p class="req">macOS 13 或更新版本</p>
+      </div>
+    </div>
+  </section>
+
+  <figure class="shot">
+    <img src="/assets/now-playing.jpg" width="2000" height="1322" alt="正在播放的歌词页：左边是封面和播放控制，右边是逐字点亮的歌词">
+    <figcaption>正在播放：歌词逐字点亮，背景取自封面的颜色。</figcaption>
+  </figure>
+
+  <section class="features" aria-labelledby="features-title">
+    <h2 id="features-title" class="visually-hidden">功能</h2>
+
+    <div class="group">
+      <h3>听歌</h3>
+      <ul>
+        <li>边下边播，音质从标准到无损和 Hi-Res 可选。</li>
+        <li>听过的歌存在本机，再听不用等。</li>
+        <li>音量均衡；暂停和继续时淡出淡入，拖动进度没有杂音。</li>
+        <li>退出后再打开，接着上次的播放队列和进度。</li>
+        <li>私人 FM（推荐、熟悉、探索）与心动模式。</li>
+      </ul>
+    </div>
+
+    <div class="group">
+      <h3>正在播放</h3>
+      <ul>
+        <li>逐字歌词与翻译。</li>
+        <li>「律动」让歌词随歌声出现：云阶把一句错落地分成几行，倾诉把唱到的字放大，还可以让每个字迸出火花。</li>
+        <li>「选歌」把待播清单铺成封面墙，拖动、甩动着挑，点封面就播。</li>
+        <li>间奏时显示热门评论。</li>
+        <li>⌘1 到 ⌘5 切换歌词、律动、待播清单、选歌和评论。</li>
+      </ul>
+    </div>
+
+    <figure class="shot">
+      <img src="/assets/song-wall.jpg" width="2000" height="1322" alt="「选歌」页：上方是正在播放的歌，下方是几排待播歌曲的封面墙" loading="lazy">
+      <figcaption>选歌：待播清单铺成封面墙，播放时每排封面随音乐左右摆动。</figcaption>
+    </figure>
+
+    <div class="group">
+      <h3>找歌</h3>
+      <ul>
+        <li>每日推荐（每天 6:00 更新）、推荐歌单和排行榜。</li>
+        <li>搜索单曲、歌手、专辑、歌单、用户和播客，边输入边给建议。</li>
+        <li>歌手页有热门与最新歌曲、专辑和动态，可以关注歌手。</li>
+      </ul>
+    </div>
+
+    <div class="group">
+      <h3>播客</h3>
+      <ul>
+        <li>订阅和收听播客，给节目点赞，看节目评论。</li>
+        <li>在本机把节目转写成字幕，像歌词一样随播放滚动，点一句就跳到那里。音频不会上传。</li>
+      </ul>
+    </div>
+
+    <div class="group">
+      <h3>在 Mac 上</h3>
+      <ul>
+        <li>刘海播放器：屏幕顶部的刘海处显示迷你播放器，指针悬停时展开。</li>
+        <li>菜单栏图标，随时控制播放。</li>
+        <li>浅色、深色或跟随系统。</li>
+        <li>用网易云音乐 App 扫码登录，登录状态存在系统钥匙串里。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="download-info" id="download" aria-labelledby="download-title">
+    <h2 id="download-title">下载</h2>
+    <p>星树音乐需要 macOS 13 或更新版本。安装包经过 Apple 公证，下载后拖进「应用程序」文件夹即可打开。</p>
+    <p><a class="download" href="https://github.com/chemark/xingshu-music/releases/latest">下载 dmg</a></p>
+  </section>
+
+  <section class="source" aria-labelledby="source-title">
+    <h2 id="source-title">源代码</h2>
+    <p>星树音乐是开源软件，以 <a href="https://github.com/chemark/xingshu-music/blob/main/LICENSE">AGPL-3.0</a> 发布，源代码在 <a href="https://github.com/chemark/xingshu-music">GitHub</a>。</p>
+    <p>它源自 egoist 的 <a href="https://github.com/egoist/mygo-cloudmusic">mygo-cloudmusic</a>，用 Go 和 <a href="https://github.com/egoist/mygo">MyGo</a> 写成。</p>
+    <p>本项目与网易云音乐官方无关，音乐版权归各权利人所有。</p>
+  </section>
+</main>
+
+<footer>
+  <img src="/assets/favicon.svg" alt="" width="20" height="20">
+  <p>星树音乐，由星树浩维护。</p>
+</footer>
+
+</body>
+</html>

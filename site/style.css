@@ -1,0 +1,165 @@
+/* 配色取自 app 图标：夜色底、米白的星、绿色的叶 */
+:root {
+  --night: #12151C;
+  --night-deep: #0E1116;
+  --star: #F8EFE4;
+  --leaf: #69984F;
+  --bg: var(--night);
+  --ink: var(--star);
+  --muted: #A7A49F;
+  --line: #262A33;
+  --link: #8DB873;
+  --serif: "Songti SC", "STSong", "Noto Serif SC", "Source Han Serif SC", serif;
+  --sans: -apple-system, "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: var(--star);
+    --ink: var(--night);
+    --muted: #5E5D5A;
+    --line: #E2D8CB;
+    --link: #4A7336;
+    color-scheme: light;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 17px/1.75 var(--sans);
+}
+
+a { color: var(--link); text-underline-offset: 0.2em; }
+a:focus-visible { outline: 2px solid var(--leaf); outline-offset: 3px; border-radius: 2px; }
+
+.bar, main, footer {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding-inline: 24px;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+  font-size: 15px;
+}
+.bar a { color: var(--ink); text-decoration: none; }
+.bar a:hover { text-decoration: underline; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 600; }
+
+/* 首屏：书名竖排，像书脊 */
+.hero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: clamp(32px, 6vw, 88px);
+  align-items: end;
+  padding: clamp(40px, 9vw, 112px) 0 clamp(48px, 7vw, 88px);
+}
+
+.name {
+  margin: 0;
+  writing-mode: vertical-rl;
+  font: 400 clamp(76px, 11vw, 148px)/1 var(--serif);
+  letter-spacing: 0.06em;
+}
+
+.pitch { max-width: 34em; padding-bottom: 0.4em; text-wrap: pretty; }
+.pitch p { margin: 0 0 1em; color: var(--muted); }
+.pitch .lede {
+  color: var(--ink);
+  font: 400 clamp(24px, 2.6vw, 30px)/1.5 var(--serif);
+  margin: 0 0 0.6em;
+}
+
+.get {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+  margin-top: 2em;
+}
+
+/* 按钮的圆角取自叶片：对角圆、对角尖 */
+.download {
+  display: inline-block;
+  padding: 12px 28px;
+  border-radius: 20px 3px;
+  background: var(--leaf);
+  color: var(--night);
+  font-weight: 600;
+  text-decoration: none;
+}
+.download:hover { background: #77A85B; }
+.get .req { margin: 0; font-size: 14px; }
+
+.shot { margin: 0 0 clamp(64px, 10vw, 128px); }
+/* 截图是带圆角的窗口，JPEG 的角是黑的，用圆角裁掉 */
+.shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 1.1% / 1.66%;
+  box-shadow: 0 0 0 1px var(--line);
+}
+.shot figcaption { margin-top: 14px; color: var(--muted); font-size: 14px; }
+
+/* 下半页：标题在左栏，内容在右栏 */
+.group, .download-info, .source {
+  display: grid;
+  grid-template-columns: 8em minmax(0, 36em);
+  gap: 0 clamp(24px, 5vw, 64px);
+  margin-bottom: clamp(48px, 7vw, 80px);
+}
+.group > *, .download-info > *, .source > * { grid-column: 2; }
+.group h3, .download-info h2, .source h2 {
+  grid-column: 1;
+  grid-row: 1 / span 9;
+  margin: 0;
+  font: 400 24px/1.6 var(--serif);
+}
+.download-info h2, .source h2 { font-size: 30px; line-height: 1.3; }
+.group ul { margin: 0; padding: 0; list-style: none; }
+.group li + li { margin-top: 0.6em; }
+.download-info p, .source p { margin: 0 0 1em; }
+.source p:last-child { color: var(--muted); }
+.features .shot { margin-top: clamp(16px, 3vw, 32px); }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 28px;
+  padding-bottom: 48px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 14px;
+}
+footer p { margin: 0; }
+
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  .bar, main, footer { padding-inline: 16px; }
+  .hero { gap: 24px; align-items: start; }
+  .name { font-size: 64px; }
+  .group, .download-info, .source { grid-template-columns: minmax(0, 1fr); }
+  .group h3, .download-info h2, .source h2 { grid-column: 1; grid-row: auto; margin-bottom: 0.4em; }
+  .group > *, .download-info > *, .source > * { grid-column: 1; }
+}

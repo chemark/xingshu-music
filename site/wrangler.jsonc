@@ -1,0 +1,13 @@
+{
+  "$schema": "https://unpkg.com/wrangler/config-schema.json",
+  "name": "xingshu-music-site",
+  "compatibility_date": "2026-10-01",
+  // 只有静态资源，没有 Worker 脚本。
+  "assets": {
+    "directory": ".",
+    "not_found_handling": "404-page"
+  },
+  "routes": [
+    { "pattern": "music.hoshikihao.com", "custom_domain": true }
+  ]
+}

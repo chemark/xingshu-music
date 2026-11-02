@@ -39,3 +39,12 @@
 - 视觉效果用眼看，不要写断言。`NM_FRAMES` 测试把 PNG 存进该目录，没设置时跳过。只在检查覆盖范围时比对像素，比如某一层是否仍盖满窗口。
 - 每个测试开头用一句注释说明它检查的行为，风格与代码一致。
 - 提交前运行 `go test ./internal/...`，新的 UI 测试用 `-count=5` 运行。不稳定的测试要修好或删掉，不要靠重跑。
+
+## Site
+
+- 星树音乐的官网放 `site/`，纯静态 HTML/CSS，不用构建工具和框架，不引入外部脚本和字体；不改上游的 `website/`。
+- 页面放 `site/` 根目录（`index.html`、`404.html`），样式放 `site/style.css`，图片放 `site/assets/`；文件名用小写英文加连字符。
+- 截图取自真实界面，不用设计稿和合成图；换界面后同步更新截图。
+- 功能介绍只写代码里已有的功能；下载按钮指向 `https://github.com/chemark/xingshu-music/releases/latest`。
+- 本地预览用 `.claude/launch.json` 的 `site`（端口 8788）。
+- 部署配置是 `site/wrangler.jsonc`，只有静态资源，没有 Worker 脚本；域名 `music.hoshikihao.com`；在 `site/` 运行 `wrangler deploy` 部署。部署前先在本地预览检查桌面和手机宽度、深浅色。

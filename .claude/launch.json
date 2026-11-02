@@ -38,6 +38,18 @@
         "website/dist/client"
       ],
       "port": 3010
+    },
+    {
+      "name": "site",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8788",
+        "--directory",
+        "site"
+      ],
+      "port": 8788
     }
   ]
 }
