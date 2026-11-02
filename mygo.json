@@ -2,13 +2,14 @@
   "name": "星树音乐",
   "identifier": "com.hoshikihao.xingshumusic",
   "slug": "xingshu-music",
-  "version": "0.1.24",
+  "version": "1.0.0",
   "out": "build",
   "macos": {
     "icon": "icon/AppIcon.icon",
     "minimumSystemVersion": "13.0",
     "signingIdentity": "Developer ID Application: hao hoshiki (6SKPUQN55Z)",
-    "entitlements": "entitlements.plist"
+    "entitlements": "entitlements.plist",
+    "notarize": { "keychainProfile": "notary" }
   },
   "linux": {
     "comment": "第三方网易云音乐桌面客户端",
