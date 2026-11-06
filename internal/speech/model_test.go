@@ -127,3 +127,39 @@ func TestChangedLibraryRefused(t *testing.T) {
 		t.Error("a changed library loads")
 	}
 }
+
+// A library of the same size but another digest, as one signed anew for a
+// new release is, counts as not installed, or the app would take the
+// captions as ready and fail to load it, offering no download. Downloading
+// replaces it and leaves the model where it is.
+func TestOtherSigningRedownloads(t *testing.T) {
+	files := map[string][]byte{"model.onnx": []byte("model"), "tokenizer/vocab.json": []byte("{}")}
+	var modelGets int
+	libURL := serve(t, func(w http.ResponseWriter, r *http.Request) { w.Write(gzipped(lib)) })(modelFile{from: "lib.gz"})
+	withModel(t, files, libURL, serve(t, func(w http.ResponseWriter, r *http.Request) {
+		modelGets++
+		w.Write(files[strings.TrimPrefix(r.URL.Path, "/repo/")])
+	}))
+	root := t.TempDir()
+	if err := Download(context.Background(), root, func(int64, int64) {}); err != nil {
+		t.Fatal(err)
+	}
+	path := filepath.Join(libDir(root), "libtest.dylib")
+	os.WriteFile(path, bytes.ReplaceAll(lib, []byte("code"), []byte("CODE")), 0o755)
+	if Installed(root) {
+		t.Fatal("a library of another digest counts as installed")
+	}
+	modelGets = 0
+	if err := Download(context.Background(), root, func(int64, int64) {}); err != nil {
+		t.Fatal(err)
+	}
+	if !Installed(root) {
+		t.Error("not installed after downloading again")
+	}
+	if got, _ := os.ReadFile(path); !bytes.Equal(got, lib) {
+		t.Error("the library was not replaced")
+	}
+	if modelGets != 0 {
+		t.Errorf("the model downloaded again, %d files", modelGets)
+	}
+}

@@ -82,7 +82,7 @@ func ModelSize() int64 {
 }
 
 // Installed reports whether the model and its libraries are in root,
-// whole.
+// whole: the libraries by their digests, as loading them checks.
 func Installed(root string) bool {
 	if !Available() {
 		return false
@@ -93,13 +93,7 @@ func Installed(root string) bool {
 			return false
 		}
 	}
-	for _, f := range natives() {
-		info, err := os.Stat(filepath.Join(libDir(root), f.name))
-		if err != nil || info.Size() != f.size {
-			return false
-		}
-	}
-	return true
+	return verifyLibs(libDir(root)) == nil
 }
 
 // Download downloads the model and the libraries that run it into root,

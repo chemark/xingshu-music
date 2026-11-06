@@ -6,17 +6,17 @@ package speech
 const libVersion = "2.0.1"
 
 // libBase is where they download from: the assets of a release of the app.
-const libBase = "https://github.com/egoist/mygo-cloudmusic/releases/download/sherpa-onnx-2.0.1/"
+const libBase = "https://github.com/chemark/xingshu-music/releases/download/sherpa-onnx-2.0.1/"
 
 // libFiles are the libraries of each platform, the C API's first.
 var libFiles = map[string][]nativeFile{
 	"darwin-amd64": {
-		{name: "libsherpa-onnx-c-api.dylib", asset: "darwin-amd64-libsherpa-onnx-c-api.dylib.gz", size: 3689696, gzSize: 1505426, sha256: "f34ff003e360a603ce2b9c0b7003a628e32eb940caba9f1c7026736e2d688915", gzSHA256: "6df6ae284bc309cac5c738ebedd0153a53e78bcd1c4f1781c35993e868465de4"},
-		{name: "libonnxruntime.dylib", asset: "darwin-amd64-libonnxruntime.dylib.gz", size: 32315984, gzSize: 9053397, sha256: "3100de3a327cdfe500858712061b3712aaa2765311c3949aec5b4837a7bb87a5", gzSHA256: "49e3559592c914fe0058e2a2b2f524fd0a5492d994c6dd6dabcbd0948c2c671a"},
+		{name: "libsherpa-onnx-c-api.dylib", asset: "darwin-amd64-libsherpa-onnx-c-api.dylib.gz", size: 3689696, gzSize: 1505422, sha256: "85ebd3ae67e4f5beb6c3bb7079d6ac8caa54021c08d3aab6c8281d799db63381", gzSHA256: "9ce9c19812e4e7053c4fc7aeda8946beb602d9536d7e0a389dc1de9b5b01b1b2"},
+		{name: "libonnxruntime.dylib", asset: "darwin-amd64-libonnxruntime.dylib.gz", size: 32315984, gzSize: 9053399, sha256: "b3fdbdbdbcbe92b463cdfb175ca027330ec688dda31b3c3b5e39f5a61943496e", gzSHA256: "6aef1e87378c9b343b0786062f9daf3b4af025cb0aee6059819e36c9d99887b9"},
 	},
 	"darwin-arm64": {
-		{name: "libsherpa-onnx-c-api.dylib", asset: "darwin-arm64-libsherpa-onnx-c-api.dylib.gz", size: 3437168, gzSize: 1358040, sha256: "ae95f14334702680785cf9f040107dcc6c86e5b1be1a668206305141ebcd3426", gzSHA256: "b42d15fae6e8a1e27f4fb6d0a923df2df7ab5ede5e0e8cf2e8066145ff603d4c"},
-		{name: "libonnxruntime.dylib", asset: "darwin-arm64-libonnxruntime.dylib.gz", size: 28775248, gzSize: 7877347, sha256: "015781793b8ce25b0f1404e16a592fb3801c45aa68ee7cb4c32aa53a2d848d81", gzSHA256: "0a3c90a9d50038644d521a6ecc175d7f0d7a488e6c937618768ff5d6c66d917c"},
+		{name: "libsherpa-onnx-c-api.dylib", asset: "darwin-arm64-libsherpa-onnx-c-api.dylib.gz", size: 3437168, gzSize: 1358024, sha256: "80af4b15c010cf0c1f4913e16c0dae999058b19e2b2bb539d5654c6c408033a7", gzSHA256: "ec2d0dfca8d957b9d2768c92902a9d1ffa94332abb627be70bba6d7cf24746fd"},
+		{name: "libonnxruntime.dylib", asset: "darwin-arm64-libonnxruntime.dylib.gz", size: 28775248, gzSize: 7877331, sha256: "c9ff1cca4a48689f6a6f06266741111b495c3fca17bd0169f5277a6d849f43d8", gzSHA256: "2a66687a2a56cbba34ee9275e23a1ce1d9264f6cc93cf851d2799cd8fac8410e"},
 	},
 	"linux-amd64": {
 		{name: "libsherpa-onnx-c-api.so", asset: "linux-amd64-libsherpa-onnx-c-api.so.gz", size: 4057064, gzSize: 1566580, sha256: "e8ea0e45a1677c489d22eecb3a9420dbd7cee1b00e611ef623d0a558abb29226", gzSHA256: "9272b64f72b9223b028b23337370b0f76e0534b67829c000c75e635848a502cc"},

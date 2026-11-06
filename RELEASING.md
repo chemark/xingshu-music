@@ -68,4 +68,16 @@
 
 ## The speech recognition libraries
 
-播客字幕用的 sherpa-onnx 库由 app 从上游的 `sherpa-onnx-2.0.1` release 下载，由上游的 Developer ID 签名，靠 `entitlements.plist` 的 `disable-library-validation` 加载。本仓库不重新打包、不发布这些库。
+播客字幕用的 sherpa-onnx 库由 app 从本仓库的 `sherpa-onnx-2.0.1` release 下载，由本仓库的 Developer ID 签名。发布新版不用动它。
+
+只有升级 sherpa-onnx 时才重新打包：改 `scripts/sherpa/main.go` 的 `version` 和压缩包的 digest，然后：
+
+```bash
+go run ./scripts/sherpa -sign "Developer ID Application: hao hoshiki (6SKPUQN55Z)" -out build/sherpa
+gh release create sherpa-onnx-<version> --repo chemark/xingshu-music --prerelease --latest=false --title "sherpa-onnx <version>" --notes-file <说明文件> build/sherpa/*
+```
+
+- 打包会重写 `internal/speech/natives.go`；每次打包的 digest 都不同，上传的文件必须和提交的 `natives.go` 来自同一次打包。
+- 必须带 `--prerelease --latest=false`，否则会占掉官网下载链接用的 `releases/latest`。
+- 已发布版本的清单写死了这些文件的 digest：不替换、不删除已有 tag 的文件，换库一律用新 tag。
+- release 说明写明 sherpa-onnx（Apache-2.0）、ONNX Runtime 和 Silero VAD（MIT）的来源和许可证。

@@ -7,7 +7,7 @@
 // and internal/speech/natives.go, which names them with their digests:
 //
 //	go run ./scripts/sherpa -sign "Developer ID Application: …" -out build/sherpa
-//	gh release create sherpa-onnx-2.0.1 --prerelease --latest=false build/sherpa/*
+//	gh release create sherpa-onnx-2.0.1 --repo chemark/xingshu-music --prerelease --latest=false build/sherpa/*
 //
 // The upstream archives are checked against their digests, and kept in the
 // user's cache between runs.
@@ -40,7 +40,7 @@ const version = "2.0.1"
 // release is the tag of the app's release the files are uploaded to.
 const release = "sherpa-onnx-" + version
 
-const repo = "egoist/mygo-cloudmusic"
+const repo = "chemark/xingshu-music"
 
 // An archive of sherpa-onnx's release, and the libraries the app takes
 // from it, the C API's first.
