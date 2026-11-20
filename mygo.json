@@ -15,5 +15,10 @@
     "comment": "第三方网易云音乐桌面客户端",
     "categories": ["AudioVideo", "Audio", "Player"],
     "webview": false
+  },
+  "updates": {
+    "publicKey": "3WZNogwJvkn3w/nku7JcaYd5wlaO0NbPak7C10fh9JE=",
+    "github": "chemark/xingshu-music",
+    "deltas": 0
   }
 }

@@ -200,9 +200,12 @@ func Run() error {
 		cacheUsed:  -1,
 	}
 	moveOldData()
-	// 自用版本不接原作者的自动更新，否则会被官方版覆盖
+	a.useUpdater()
 	mygo.App.WhenReady(func() {
 		a.settings = loadSettings()
+		if dir, err := mygo.App.Path(mygo.PathUserData); err == nil {
+			initUpdateDownloads(dir)
+		}
 		a.settings.applyAppearance()
 		a.npPane = a.lyricsPaneChosen()
 		// Before the window: on Windows it lays out its content as it is

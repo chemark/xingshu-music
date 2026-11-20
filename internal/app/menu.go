@@ -4,6 +4,7 @@ import (
 	"runtime"
 
 	"github.com/egoist/mygo"
+	"github.com/egoist/mygo/plugins/updater"
 )
 
 // setMenu gives the app its menu bar, in Chinese and named as the app
@@ -19,10 +20,15 @@ func (a *app) setMenu() {
 	name := mygo.App.Name()
 	appMenu := []*mygo.MenuItem{
 		{Role: mygo.RoleAbout, Label: "关于" + name},
-		mygo.Separator(),
-		{Label: "设置…", Accelerator: "CmdOrCtrl+,", Click: run(a.openSettings)},
-		mygo.Separator(),
 	}
+	if a.updates {
+		appMenu = append(appMenu, updater.MenuItem())
+	}
+	appMenu = append(appMenu,
+		mygo.Separator(),
+		&mygo.MenuItem{Label: "设置…", Accelerator: "CmdOrCtrl+,", Click: run(a.openSettings)},
+		mygo.Separator(),
+	)
 	// Services and hiding are macOS's alone. Elsewhere MyGo leaves their
 	// items out but keeps the separators around them, which then stack.
 	if runtime.GOOS == "darwin" {

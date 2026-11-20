@@ -1,7 +1,7 @@
 # Pushing a tag such as v1.1.0 builds the macOS app for Apple silicon and
 # Intel, signs it, notarizes its disk images, and uploads them to a draft
-# release of the tag, which is published by hand. 星树音乐 has no updater,
-# so no update manifests are made or uploaded.
+# release of the tag, along with signed update archives and manifests.
+# The draft is checked and published by hand.
 name: Release
 
 on:
@@ -61,10 +61,17 @@ jobs:
           xcrun notarytool store-credentials notary --keychain "$keychain" \
             --key "$RUNNER_TEMP/AuthKey.p8" --key-id "$APPLE_API_KEY_ID" --issuer "$APPLE_API_ISSUER_ID"
           rm "$RUNNER_TEMP/AuthKey.p8"
-      # Without -upload: mygo build uploads only with updates in mygo.json,
-      # which 星树音乐 leaves out.
+      # Keep publication manual; a missing key must fail before building.
       - name: Build
-        run: go tool mygo build -platform darwin/arm64,darwin/amd64
+        env:
+          MYGO_UPDATER_PRIVATE_KEY: ${{ secrets.MYGO_UPDATER_PRIVATE_KEY }}
+        run: |
+          test -n "$MYGO_UPDATER_PRIVATE_KEY"
+          go tool mygo build -platform darwin/arm64,darwin/amd64
+          for arch in arm64 amd64; do
+            test -s "build/darwin-$arch/update-darwin-$arch.json"
+            test -s "build/darwin-$arch/xingshu-music-${GITHUB_REF_NAME#v}-darwin-$arch.tar.gz"
+          done
       # Uploaded without the version in their names, so that the website
       # links to releases/latest/download/xingshu-music-<arch>.dmg.
       - name: Upload to the draft release
@@ -79,3 +86,6 @@ jobs:
               --draft --verify-tag --title "$GITHUB_REF_NAME" --notes-file "$RUNNER_TEMP/notes.md"
           fi
           gh release upload "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --clobber "$RUNNER_TEMP"/xingshu-music-*.dmg
+          # Upload signed archives before the manifests that reference them.
+          gh release upload "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --clobber build/darwin-*/xingshu-music-*-darwin-*.tar.gz
+          gh release upload "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --clobber build/darwin-*/update-darwin-*.json

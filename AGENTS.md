@@ -4,14 +4,15 @@
 
 - 用 `go tool mygo build -skip-notarize -skip-dmg` 打包；先退出正在运行的 app，再用 `build/darwin-arm64/星树音乐.app` 替换 `/Applications/星树音乐.app`。
 - `mygo.json` 里的 `name`、`identifier`、`signingIdentity`、`entitlements`、`notarize` 保持不变。
-- 不要加回更新功能：`mygo.json` 的 `updates`、`useUpdater`、「检查更新」菜单项。
+- 启用 MyGo 自动更新，更新源只用 `chemark/xingshu-music`；保留设置和菜单里的检查更新入口。
 - 在 `main` 上独立维护，`main` 跟踪 `origin`（`chemark/xingshu-music`）；不合并 `upstream/main`（`egoist/mygo-cloudmusic`）。
 
 ## Release
 
 - 按 `RELEASING.md` 发布：推 `v<version>` tag 触发 `.github/workflows/release.yml`，只构建 macOS 的 `darwin/arm64` 和 `darwin/amd64` 两个 dmg，签名、公证后上传到草稿 release，检查后手动发布。
 - Release 的 dmg 只用固定文件名 `xingshu-music-arm64.dmg`、`xingshu-music-amd64.dmg`，不带版本号；官网和 README 链接 `releases/latest/download/<文件名>`。
-- 不用 `mygo build -upload`，不生成、不上传更新清单。
+- 不用 `mygo build -upload`；工作流将签名更新包和更新清单与 dmg 一起上传到草稿 release，检查后手动发布。
+- 更新签名私钥只放本机用户配置目录和 GitHub Actions Secret `MYGO_UPDATER_PRIVATE_KEY`，不提交进 Git。
 - 版本号从 1.0.0 起独立编号；每次发布在 `CHANGELOG.md` 顶部加 `## <version>` 一节。
 
 ## Design

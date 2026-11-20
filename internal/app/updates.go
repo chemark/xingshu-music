@@ -1,6 +1,9 @@
 package app
 
 import (
+	"os"
+	"path/filepath"
+
 	"github.com/egoist/mygo"
 	"github.com/egoist/mygo/plugins/updater"
 	"github.com/egoist/mygo/plugins/updater/native"
@@ -30,4 +33,11 @@ func (a *app) useUpdater() {
 			a.settingsWin.Invalidate()
 		}
 	})
+}
+
+// 仅首次启用自动下载；已有状态（包括用户关闭的选择）保持不变。
+func initUpdateDownloads(dir string) {
+	if _, err := os.Stat(filepath.Join(dir, "updater.json")); os.IsNotExist(err) {
+		setUpdateDownloads(true)
+	}
 }

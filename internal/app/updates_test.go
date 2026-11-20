@@ -106,3 +106,17 @@ func TestMoveOldData(t *testing.T) {
 		t.Fatalf("settings %q, moved over what was there", b)
 	}
 }
+
+// 重启时保留用户已关闭的自动下载，不因初始化覆盖选择。
+func TestUpdateDownloadsKeepUserChoice(t *testing.T) {
+	dir := t.TempDir()
+	if err := os.WriteFile(filepath.Join(dir, "updater.json"), []byte(`{"automaticDownloads":false}`), 0600); err != nil {
+		t.Fatal(err)
+	}
+	checks, downloads, checked := true, false, 0
+	defer fakeUpdater(&checks, &downloads, &checked)()
+	initUpdateDownloads(dir)
+	if downloads {
+		t.Fatal("re-enabled downloads after the user disabled them")
+	}
+}
