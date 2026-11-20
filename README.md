@@ -2,7 +2,9 @@
 
 macOS 上的第三方网易云音乐客户端，用 Go 和 [MyGo](https://github.com/egoist/mygo) 写成，原生界面，无 WebView。
 
-星树音乐源自 [egoist/mygo-cloudmusic](https://github.com/egoist/mygo-cloudmusic)（MyGo 云音乐），在它的基础上换了名字和图标，用自己的 Developer ID 签名并公证，去掉了自动更新，并会持续合并上游的改动。原项目的版权归原作者所有，本项目沿用同样的 [AGPL-3.0](LICENSE) 许可证。
+官网：[music.hoshikihao.com](https://music.hoshikihao.com/)。
+
+星树音乐由星树浩独立维护，使用自己的版本号和发布流程。项目最初基于 [MyGo 云音乐](https://github.com/egoist/mygo-cloudmusic) 0.1.24 开发，此后独立演进，不再同步原项目的后续改动。原项目的版权归原作者所有，本项目沿用 [AGPL-3.0](LICENSE) 许可证。
 
 ## 功能
 
@@ -45,7 +47,7 @@ go test ./...        # 运行测试
 
 ## 致谢
 
-- [MyGo 云音乐](https://github.com/egoist/mygo-cloudmusic)：星树音乐的原项目，作者 [EGOIST](https://github.com/egoist)
+- [MyGo 云音乐](https://github.com/egoist/mygo-cloudmusic) 0.1.24：星树音乐最初的代码来源，作者 [EGOIST](https://github.com/egoist)
 - [MyGo](https://github.com/egoist/mygo)：原生 UI 与应用框架
 - [NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)：eapi 加密与登录流程的参考
 - [folia-major](https://github.com/chthollyphile/folia-major)：歌词动画效果的参考
