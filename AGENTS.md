@@ -5,7 +5,7 @@
 - 用 `go tool mygo build -skip-notarize -skip-dmg` 打包；先退出正在运行的 app，再用 `build/darwin-arm64/星树音乐.app` 替换 `/Applications/星树音乐.app`。
 - `mygo.json` 里的 `name`、`identifier`、`signingIdentity`、`entitlements`、`notarize` 保持不变。
 - 不要加回更新功能：`mygo.json` 的 `updates`、`useUpdater`、「检查更新」菜单项。
-- 在 `main` 上工作，`main` 跟踪 `origin`（`chemark/xingshu-music`）；上游改动通过合并 `upstream/main`（`egoist/mygo-cloudmusic`）获取。
+- 在 `main` 上工作，`main` 跟踪 `origin`（`chemark/xingshu-music`）；不合并 `upstream/main`（`egoist/mygo-cloudmusic`）。
 - `website/` 是上游的官网，不改动。
 
 ## Release
@@ -14,7 +14,6 @@
 - Release 的 dmg 只用固定文件名 `xingshu-music-arm64.dmg`、`xingshu-music-amd64.dmg`，不带版本号；官网和 README 链接 `releases/latest/download/<文件名>`。
 - 不用 `mygo build -upload`，不生成、不上传更新清单。
 - 版本号从 1.0.0 起独立编号，不跟上游；每次发布在 `CHANGELOG.md` 顶部加 `## <version>` 一节。
-- 合并上游时，`mygo.json` 的 `version` 和 `CHANGELOG.md` 顶部的冲突保留本仓库的版本，上游的新变化写进下一版的 `## <version>` 一节。
 
 ## Design
 
