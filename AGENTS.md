@@ -6,7 +6,6 @@
 - `mygo.json` 里的 `name`、`identifier`、`signingIdentity`、`entitlements`、`notarize` 保持不变。
 - 不要加回更新功能：`mygo.json` 的 `updates`、`useUpdater`、「检查更新」菜单项。
 - 在 `main` 上独立维护，`main` 跟踪 `origin`（`chemark/xingshu-music`）；不合并 `upstream/main`（`egoist/mygo-cloudmusic`）。
-- `website/` 是原项目遗留的官网目录，不改动。
 
 ## Release
 
@@ -50,7 +49,7 @@
 
 ## Site
 
-- 星树音乐的官网放 `site/`，纯静态 HTML/CSS，不用构建工具和框架，不引入外部脚本和字体；不改原项目遗留的 `website/`。
+- 星树音乐的官网放 `site/`，纯静态 HTML/CSS，不用构建工具和框架，不引入外部脚本和字体。
 - 页面放 `site/` 根目录（`index.html`、`404.html`），样式放 `site/style.css`，图片放 `site/assets/`；文件名用小写英文加连字符。
 - 截图取自真实界面，不用设计稿和合成图；分享图 `share-card` 只用真实截图排版；换界面后同步更新截图和分享图。
 - 功能介绍只写代码里已有的功能；下载按钮直链 `https://github.com/chemark/xingshu-music/releases/latest/download/xingshu-music-arm64.dmg` 和 `…-amd64.dmg`，旁边写当前版本号。
