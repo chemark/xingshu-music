@@ -413,7 +413,7 @@ func Lossless(level string) bool { return level == "lossless" || level == "hires
 // the eapi, which carries the session, so VIP songs play for subscribers.
 func SongURL(id int64, level string) (*Stream, error) {
 	var res struct {
-		Code int `json:"code"`
+		apiError
 		Data []struct {
 			Stream
 			URL           string          `json:"url"`
@@ -429,7 +429,18 @@ func SongURL(id int64, level string) (*Stream, error) {
 	if err := eapiPost("/api/song/enhance/player/url/v1", data, &res); err != nil {
 		return nil, err
 	}
-	if len(res.Data) == 0 || res.Data[0].URL == "" {
+	// 风控或登录错误不是歌曲无权限，保留状态码和原因供播放器提示。
+	if res.Code != 200 {
+		msg := res.Message
+		if msg == "" {
+			msg = res.Msg
+		}
+		return nil, fmt.Errorf("netease: song URL: code %d %s", res.Code, msg)
+	}
+	if len(res.Data) == 0 {
+		return nil, errors.New("netease: song URL: missing stream data")
+	}
+	if res.Data[0].URL == "" {
 		return nil, ErrUnavailable
 	}
 	d := res.Data[0]

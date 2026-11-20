@@ -637,8 +637,8 @@ func (p *Player) loadSkipping(at, skipped int, play bool, from time.Duration) {
 				default:
 					p.err = "这首歌需要 VIP 才能播放"
 				}
-				// Skip what cannot play, unless nothing in the queue can.
-				if skipped+1 < len(p.order) {
+				// 只跳过无权限的歌曲，网络和风控错误停在当前歌曲并显示原因。
+				if errors.Is(err, netease.ErrUnavailable) && skipped+1 < len(p.order) {
 					next := at + 1
 					if next >= len(p.order) {
 						next = 0

@@ -1,9 +1,13 @@
 package player
 
 import (
+	"errors"
+	"io"
 	"math"
+	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 	"time"
 
@@ -223,3 +227,58 @@ func TestEndRadio(t *testing.T) {
 		t.Error("asked the radio after leaving it")
 	}
 }
+
+// 加载错误曾导致整张歌单连跳；风控、网络和下载错误应停在原曲，只有无权限才跳过。
+func TestLoadFailureDoesNotScanQueue(t *testing.T) {
+	for _, tc := range []struct {
+		name, body string
+		network    bool
+		wantID     int64
+	}{
+		{"risk", `{"code":-460,"message":"network risk"}`, false, 1},
+		{"network", "", true, 1},
+		{"download", `{"code":200,"data":[{"url":"https://audio.invalid/song.mp3","type":"mp3","size":1024}]}`, false, 1},
+		{"unavailable", `{"code":200,"data":[{"url":null}]}`, false, 2},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			old := http.DefaultTransport
+			http.DefaultTransport = loadTransport(func(r *http.Request) (*http.Response, error) {
+				body := "{}"
+				status := http.StatusOK
+				if strings.Contains(r.URL.Path, "song/enhance/player/url") {
+					if tc.network {
+						return nil, errors.New("network unavailable")
+					}
+					body = tc.body
+				}
+				if r.URL.Host == "audio.invalid" {
+					status = http.StatusServiceUnavailable
+					body = "unavailable"
+				}
+				return &http.Response{StatusCode: status, Status: http.StatusText(status), Header: make(http.Header), Body: io.NopCloser(strings.NewReader(body))}, nil
+			})
+			defer func() { http.DefaultTransport = old }()
+			ch := make(chan func(), 32)
+			p := New(func(fn func()) { ch <- fn })
+			tracks := []netease.Track{{ID: 1, Name: "一", Duration: 60000, Album: netease.Album{PicURL: "https://cover.invalid/1"}}, {ID: 2, Name: "二", Duration: 60000, Album: netease.Album{PicURL: "https://cover.invalid/2"}}}
+			p.PlayQueue(tracks, 0)
+			// 每次加载各有封面、歌词和音频三个回调；处理完所有回调再恢复 HTTP transport。
+			for handled := 0; handled < 3*p.gen; handled++ {
+				next(t, ch)
+			}
+			if p.Current().ID != tc.wantID {
+				t.Fatalf("jumped to track %d, want %d", p.Current().ID, tc.wantID)
+			}
+			if p.Loading() || p.Playing() || p.Err() == "" {
+				t.Fatalf("loading=%v playing=%v err=%q", p.Loading(), p.Playing(), p.Err())
+			}
+			if tc.name == "risk" && !strings.Contains(p.Err(), "-460") {
+				t.Fatalf("lost risk error: %s", p.Err())
+			}
+		})
+	}
+}
+
+type loadTransport func(*http.Request) (*http.Response, error)
+
+func (f loadTransport) RoundTrip(r *http.Request) (*http.Response, error) { return f(r) }
