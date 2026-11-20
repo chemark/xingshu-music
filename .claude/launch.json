@@ -50,6 +50,18 @@
         "site"
       ],
       "port": 8788
+    },
+    {
+      "name": "site-8789",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8789",
+        "--directory",
+        "site"
+      ],
+      "port": 8789
     }
   ]
 }
